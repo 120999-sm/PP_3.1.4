@@ -37,17 +37,22 @@ public class AdminController {
         model.addAttribute("thisUser", user);
         model.addAttribute("users", userService.getUsersList());
         model.addAttribute("flag", user.getUserRolesForUI().contains("ADMIN"));
-        return "users";
-    }
-    @GetMapping("/new")
-    public String getCreateNewUserForm(Model model) {
-        model.addAttribute(new User());
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "new_user";
+        return "mainMenu";
     }
 
-    @PostMapping("/new")
-    public String addUser(@ModelAttribute("user") User user, @RequestParam("checkRoles") String[] selectResult) {
+    @PostMapping("/edit")
+    public String editUser(@ModelAttribute("user") User user,@RequestParam("checkRoles") String[] selectResult) {
+        Set<Role> roles = new HashSet<>();
+        for (String s : selectResult) {
+            roles.add(roleService.getRoleForName("ROLE_" + s));
+            user.setRoles(roles);
+        }
+        userService.editUser(user);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/add")
+    public String addUser(@ModelAttribute("User") User user, @RequestParam("checkRoles") String[] selectResult) {
         Set<Role> roles = new HashSet<>();
         for (String s : selectResult) {
             roles.add(roleService.getRoleForName("ROLE_" + s));
@@ -57,27 +62,9 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-
-    @GetMapping("/deleteUser")
-    public String deleteUser(@RequestParam("id") Long id) {
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/updateUser")
-    public String showAndEdit(ModelMap model, @RequestParam("id") long id) {
-        model.addAttribute("user", userService.getUser(id));
-        return "edit_user";
-    }
-
-    @PostMapping("/updateUser")
-    public String editUser(@ModelAttribute("user") User user,@RequestParam("checkRoles") String[] selectResult) {
-        Set<Role> roles = new HashSet<>();
-        for (String s : selectResult) {
-            roles.add(roleService.getRoleForName("ROLE_" + s));
-            user.setRoles(roles);
-        }
-        userService.editUser(user);
         return "redirect:/admin";
     }
 }

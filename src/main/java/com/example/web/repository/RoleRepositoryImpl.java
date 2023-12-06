@@ -27,9 +27,5 @@ public class RoleRepositoryImpl implements RoleRepository {
     public Role getRoleById(Long id) {
             return entityManager.find(Role.class, id);
         }
-    @Override
-    public void addRole(Role role) {
-            entityManager.persist(role);
-        }
 }
 

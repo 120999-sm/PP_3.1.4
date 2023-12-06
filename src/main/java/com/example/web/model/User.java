@@ -1,5 +1,7 @@
 package com.example.web.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +12,8 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table (name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -26,17 +30,6 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String userPassword;
 
-    public User() {
-
-    }
-
-    public User(String firstName, String lastName, String email, String userName, String userPassword) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.userName = userName;
-        this.userPassword= userPassword;
-    }
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",

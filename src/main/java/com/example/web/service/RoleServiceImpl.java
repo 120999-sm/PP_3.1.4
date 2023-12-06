@@ -33,8 +33,4 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.getRoleById(id);
     }
 
-    @Override
-    public void addRole(Role role) {
-        roleRepository.addRole(role);
-    }
 }
