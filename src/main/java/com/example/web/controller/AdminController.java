@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/users")
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
@@ -48,7 +48,7 @@ public class AdminController {
             user.setRoles(roles);
         }
         userService.editUser(user);
-        return "redirect:/admin";
+        return "redirect:/admin/users";
     }
 
     @PostMapping("/add")
@@ -59,12 +59,12 @@ public class AdminController {
             user.setRoles(roles);
         }
         userService.addUser(user);
-        return "redirect:/admin";
+        return "redirect:/admin/users";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return "redirect:/admin";
+        return "redirect:/admin/users";
     }
 }
